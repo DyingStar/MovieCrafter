@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,14 +20,16 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class MoviePosterFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_MOVIE_ID = "movieId";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String TMDB_SCHEME = "http";
+    private static final String TMDB_AUTHORITY = "image.tmdb.org";
+    private static final String TMDB_PATH1 = "t";
+    private static final String TMDB_PATH2 = "p";
+    private static final String TMDB_IMG_SIZE = "w185";
+
+    // Movie ID, of the format '/<movieID>.jpg'
+    private String movieId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -33,16 +37,13 @@ public class MoviePosterFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param movieId The ID of the movie to be displayed in this fragment
      * @return A new instance of fragment MoviePosterFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MoviePosterFragment newInstance(String param1, String param2) {
+    public static MoviePosterFragment newInstance(String movieId) {
         MoviePosterFragment fragment = new MoviePosterFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_MOVIE_ID, movieId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,17 +56,34 @@ public class MoviePosterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            movieId = getArguments().getString(ARG_MOVIE_ID);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        // Inflate the view
+        View rootView = inflater.inflate(R.layout.fragment_movieposter, container, false);
+
+        // Get the ImageView for displaying the poster within this fragment
+        ImageView posterView = (ImageView) this.getActivity().findViewById(R.id.fragment_view_poster);
+
+        // Let Picasso load the image into the poster view for optimal efficiency
+        Picasso.with(this.getActivity()).load(this.createUri()).into(posterView);
+
+        return rootView;
+    }
+
+    private Uri createUri() {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(TMDB_SCHEME)
+                .authority(TMDB_AUTHORITY)
+                .appendPath(TMDB_PATH1)
+                .appendPath(TMDB_PATH2)
+                .appendPath(TMDB_IMG_SIZE)
+                .appendPath(movieId);
+        return builder.build();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
