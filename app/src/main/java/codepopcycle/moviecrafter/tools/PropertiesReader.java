@@ -1,4 +1,4 @@
-package codepopcycle.moviecrafter;
+package codepopcycle.moviecrafter.tools;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import codepopcycle.moviecrafter.R;
 
 /**
  * Created by nicolas on 09/08/15.
@@ -17,6 +19,7 @@ public class PropertiesReader {
     public static String readProperty(Context context, String key) {
         Properties props = new Properties();
         try {
+            Log.d(LOG_TAG, context.getResources().getString(R.string.properties_local));
             // Get input stream from properties file
             InputStream propertiesStream = context.getAssets().open(context.getResources().getString(R.string.properties_local));
 

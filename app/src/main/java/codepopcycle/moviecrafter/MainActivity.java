@@ -1,9 +1,10 @@
 package codepopcycle.moviecrafter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,6 +12,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        GridView movieGrid = (GridView) this.findViewById(R.id.activity_view_moviegrid);
+        movieGrid.setAdapter(new MovieViewAdapter(this));
     }
 
     @Override
