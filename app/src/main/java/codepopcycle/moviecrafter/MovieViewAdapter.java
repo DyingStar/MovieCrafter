@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -79,10 +80,18 @@ public class MovieViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
+            // If it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(((Activity)mContext).findViewById(R.id.activity_view_moviegrid).getLayoutParams());
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 450));
+
+            // Define size of imageView
+            int width = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    100,
+                    mContext.getResources().getDisplayMetrics());
+            int height = width / 2 * 3;
+
+            //imageView.setLayoutParams(((Activity)mContext).findViewById(R.id.activity_view_moviegrid).getLayoutParams());
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(8, 8, 8, 8);
         } else {
